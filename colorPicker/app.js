@@ -39,6 +39,7 @@ hardBtn.addEventListener("click", function(){
         }
     }
 })
+
 resetButton.addEventListener("click", function(){
     //GENERTE NEW COLORS
     colors = generateRandomColors(numSquares);

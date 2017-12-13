@@ -52,7 +52,9 @@ button {
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 1px;
+    outline: none;
 }
+
 button:hover {
     background: steelblue;
     color: white;  
@@ -62,9 +64,4 @@ button:hover {
 #message {
     display: inline-block;
     width: 20%;
-    color: steelblue;
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 1px;
 }
