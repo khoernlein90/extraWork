@@ -1,0 +1,11 @@
+<% include partials/header %>
+
+<% people.forEach(function(people){ %>
+     <li> <%= people %> </li>
+<%})%>
+<% include partials/footer %>
+
+<form action="/addperson" method="POST">
+    <input type="text" name="newPerson" placeholder="name">
+    <button>Add Person</button>
+</form>
