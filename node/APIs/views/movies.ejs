@@ -1,0 +1,11 @@
+<% include partials/header %>
+
+<ul>
+    <% data.Search.forEach(function(movie){ %>
+        <li>
+            <%= movie.Title %>
+        </li>
+        <% }) %>
+</ul>
+
+<% include partials/footer %>
