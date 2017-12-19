@@ -1,0 +1,10 @@
+#container {
+    margin-top: 7em;
+}
+#blogContainer {
+    margin: 50px auto;
+}
+.ui.card {
+    margin: 0 auto;
+    width: 400px;
+}
