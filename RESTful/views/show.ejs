@@ -12,13 +12,17 @@
                 </h1>
                 <div class="meta">
                     <span class="date">
-                        <%= blog.created %>
+                        <%= blog.created.toDateString() %>
                     </span>
                 </div>
                 <div class="description">
                     <%= blog.body %>
                 </div>
             </div>
+            <form action="/blogs/<%=blog._id%>/?_method=DELETE" method="POST">
+                <a class="ui basic button orange" href="/blogs/<%=blog._id%>/edit">Edit</a>                
+                <button class="ui basic button red">Delete</button>
+            </form>
         </div>
     </div>
 
