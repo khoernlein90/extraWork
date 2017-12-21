@@ -3,10 +3,14 @@ var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var Campground = require("./models/campground");
+var Comment = require("./models/comment");
+var seedDB = require("./seed");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+
+seedDB();
 
 mongoose.connect("mongodb://localhost/yelp_camp");
 
@@ -14,37 +18,63 @@ app.get("/", function (req, res) {
     res.render("landing");
 })
 
+// INDEX ROUTE
 app.get("/campgrounds", function (req, res) {
     Campground.find({}, function (err, allCampgrounds) {
         if (err) throw err;
         else {
-            res.render("index", { campgrounds: allCampgrounds })
+            res.render("./campgrounds/index", { campgrounds: allCampgrounds })
         }
     })
 })
 
+// NEW ROUTE
 app.get("/campgrounds/new", function (req, res) {
-    res.render("new");
+    res.render("./campgrounds/new");
 })
 
-app.get("/campgrounds/:id", function(req, res){
-    Campground.findById(req.params.id, function(err, pickedCampground){
-        if(err) throw err;
+// SHOW ROUTE
+app.get("/campgrounds/:id", function (req, res) {
+    Campground.findById(req.params.id).populate("comments").exec(function (err, pickedCampground) {
+        if (err) throw err;
         else {
-            res.render("show", {campground: pickedCampground});
+            res.render("./campgrounds/show", { campground: pickedCampground });
         }
     })
 })
 
+// CREATE ROUTE
 app.post("/campgrounds", function (req, res) {
-    var name = req.body.name;
-    var image = req.body.image;
-    var description = req.body.description;
-    var newCampground = { name: name, image: image, description: description };
-    Campground.create(newCampground, function (err, newlyAdded) {
+    Campground.create(req.body.campground, function (err, newlyAdded) {
         if (err) throw err;
         else {
             res.redirect("/campgrounds");
+        }
+    })
+})
+// NEW COMMENT ROUTE / FORM
+app.get("/campgrounds/:id/comments/new", function (req, res) {
+    Campground.findById(req.params.id, function (err, campground) {
+        if (err) throw err;
+        else {
+            res.render("./comments/new", { campground: campground });
+        }
+    })
+})
+
+// SEND NEW COMMENT DATA TO SPECIFIC CAMPGROUND
+app.post("/campgrounds/:id/comments", function (req, res) {
+    Campground.findById(req.params.id, function (err, campground) {
+        if (err) throw err;
+        else {
+            Comment.create(req.body.comment, function (err, comment) {
+                if (err) throw err;
+                else {
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect("/campgrounds/" + campground._id)
+                }
+            })
         }
     })
 })
