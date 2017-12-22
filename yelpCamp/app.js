@@ -7,7 +7,7 @@ var Comment = require("./models/comment");
 var seedDB = require("./seed");
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 seedDB();
