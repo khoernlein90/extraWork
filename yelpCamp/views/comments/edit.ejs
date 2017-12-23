@@ -2,11 +2,11 @@
 
     <div class="container" id="new-container"> 
         <div class="card">
-        <h1 class="text-center card-header">Add New Comments</h1>
+        <h1 class="text-center card-header">Edit Comment</h1>
         <div class="form-div">
-            <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
+            <form action="/campgrounds/<%=campground_id%>/comments/<%=comment._id%>?_method=PUT" method="POST">
                 <div class="form-group">
-                    <textarea type="text" name="comment[text]" class="form-control" placeholder="Add Comment"></textarea>
+                    <textarea type="text" name="comment[text]" class="form-control"><%=comment.text%></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

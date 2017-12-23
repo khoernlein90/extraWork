@@ -13,12 +13,12 @@
         <div class="row">
             <% campgrounds.forEach(function(campground){ %>
                 <div class="col-md-3 col-sm-6">
-                    <figure class="figure">
-                        <img src="<%=campground.image%>" class="figure-img img-fluid rounded" alt="">
-                        <figcaption class="figure-caption">
-                            <%= campground.name %>
+                    <figure class="figure text-center border border-secondary rounded">
+                        <img src="<%=campground.image%>" class="figure-img img-fluid rounded">
+                        <figcaption class="figure-caption"><h5>
+                            <%= campground.name %></h5>
                         </figcaption>
-                        <a class="btn btn-primary" href="/campgrounds/<%=campground._id%>">More Info</a>
+                        <a class="btn btn-sm btn-primary" href="/campgrounds/<%=campground._id%>">More Info</a>
                     </figure>
                 </div>
                 <% }) %>

@@ -16,8 +16,9 @@ router.post("/register", function (req, res) {
     var newUser = ({ username: req.body.username });
     User.register(newUser, req.body.password, function (err, user) {
         if (err) {
-            console.log(err)
-            return res.render("register");
+            
+            req.flash("error", err.message);
+            res.redirect("back");
         }
         passport.authenticate("local")(req, res, function () {
             res.redirect("/campgrounds");
@@ -33,20 +34,16 @@ router.get("/login", function (req, res) {
 router.post("/login", passport.authenticate("local",
     {
         successRedirect: "/campgrounds",
-        failureRedirect: "/login"
+        failureRedirect: "/login",
+        badRequestMessage : 'Missing username or password.',
+        failureFlash: true
     }), function (req, res) {
     });
 //Logout route
-router.get("/logout", function(req, res){
+router.get("/logout", function (req, res) {
+    req.flash("success", "Successfully logged you out");
     req.logout();
     res.redirect("/campgrounds");
 })
-// Check if user is loggen in function
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login")
-}
 
 module.exports = router;
