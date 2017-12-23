@@ -15,9 +15,13 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="/">YelpCamp</a>
             <div class="nav navbar-nav mr-sm-2">
-                <a class="nav-item nav-link" href="#">Signup</a>
-                <a class="nav-item nav-link" href="#">Login</a>
-                <a class="nav-item nav-link" href="#">Logout</a>
+                <% if(!currentUser){ %>
+                    <a class="nav-item nav-link" href="/register">Signup</a>
+                    <a class="nav-item nav-link" href="/login">Login</a>
+                <% } else { %>
+                    <a class="nav-item nav-link">Signed in as <%= currentUser.username %></a>
+                    <a class="nav-item nav-link" href="/logout">Logout</a>
+                <% } %>
             </div>
         </div>
     </nav>
