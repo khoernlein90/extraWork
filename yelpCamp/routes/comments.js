@@ -35,19 +35,26 @@ router.post("/campgrounds/:id/comments", middleware.isLoggedIn, function (req, r
     })
 })
 // EDIT COMMENT FORM
-router.get("/campgrounds/:id/comments/:comment_id/edit", middleware.checkCommentOwnership, function(req, res){
-    Comment.findById(req.params.comment_id, function(err, comment){
-        if(err){
-            res.redirect("back");
-        } else {
-            res.render("comments/edit", {campground_id: req.params.id, comment: comment});
+router.get("/campgrounds/:id/comments/:comment_id/edit", middleware.checkCommentOwnership, function (req, res) {
+    Campground.findById(req.params.id, function (err, foundCampground) {
+        if (err || !foundCampground) {
+            console.log(err);
+            req.flash("error", "Campground not found");
+            return res.redirect("back");
         }
+        Comment.findById(req.params.comment_id, function (err, comment) {
+            if (err) {
+                res.redirect("back");
+            } else {
+                res.render("comments/edit", { campground_id: req.params.id, comment: comment });
+            }
+        })
     })
 })
 // SEND UPDATED DATA BACK
-router.put("/campgrounds/:id/comments/:comment_id", middleware.checkCommentOwnership, function(req, res){
-    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment){
-        if (err){
+router.put("/campgrounds/:id/comments/:comment_id", middleware.checkCommentOwnership, function (req, res) {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (err, comment) {
+        if (err) {
             res.redirect("back");
         } else {
             res.redirect("/campgrounds/" + req.params.id);
@@ -55,9 +62,9 @@ router.put("/campgrounds/:id/comments/:comment_id", middleware.checkCommentOwner
     })
 })
 
-router.delete("/campgrounds/:id/comments/:comment_id", middleware.checkCommentOwnership, function(req, res){
-    Comment.findByIdAndRemove(req.params.comment_id, function(err){
-        if (err){
+router.delete("/campgrounds/:id/comments/:comment_id", middleware.checkCommentOwnership, function (req, res) {
+    Comment.findByIdAndRemove(req.params.comment_id, function (err) {
+        if (err) {
             res.redirect("back");
         } else {
             req.flash("success", "Deleted comment");
